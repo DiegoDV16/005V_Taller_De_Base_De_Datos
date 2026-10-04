@@ -1,0 +1,14 @@
+SELECT * FROM CLIENTE;
+
+INSERT INTO CLIENTE (CLIENTE_ID,RUT,  NOMBRE, APELLIDO, EMAIL) VALUES (1, '12345678-9', 'JJu  an', 'Perez', 'juan.  perez@example.com');
+COMMIT;
+
+CREATE OR REPLACE TRIGGER tgr_validar_datos_cliente
+BEFORE INSERT OR UPDATE ON cliente
+FOR EACH ROW
+BEGIN
+    :NEW.NOMBRE := INITCAP(TRIM(REPLACE(:NEW.NOMBRE, '  ', '')));
+    :NEW.APELLIDO := INITCAP(TRIM(REPLACE(:NEW.APELLIDO, '  ', '')));
+    :NEW.EMAIL := LOWER(TRIM(REPLACE(:NEW.EMAIL, '  ', '')));
+END tgr_validar_datos_cliente;
+/
